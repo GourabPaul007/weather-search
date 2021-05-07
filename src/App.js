@@ -1,33 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { makeStyles, Grid } from "@material-ui/core";
+import { orange, lightBlue, deepOrange, deepPurple, pink, purple } from "@material-ui/core/colors";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+
+import Weather from "./weather";
 
 import Navbar from "./components/navbar";
-import ShowWeather from "./components/showWeather";
-import Forecast from "./components/forecast";
-
-const useStyles = makeStyles((theme) => ({
-  mainCards: {
-    margin: 24,
-  },
-}));
 
 const App = () => {
-  const classes = useStyles();
+  const [darkState, setDarkState] = useState(false);
+  const palletType = darkState ? "dark" : "light";
+  const mainPrimaryColor = darkState ? pink[700] : lightBlue[500];
+  const mainSecondaryColor = darkState ? purple[900] : deepPurple[500];
+  const darkTheme = createMuiTheme({
+    palette: {
+      type: palletType,
+      primary: {
+        main: mainPrimaryColor,
+      },
+      secondary: {
+        main: mainSecondaryColor,
+      },
+    },
+  });
+
+  const handleThemeChange = () => {
+    setDarkState(!darkState);
+  };
+
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Navbar />
-        <Grid container>
-          <Grid item xs={12} sm={8}>
-            <ShowWeather />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Forecast />
-          </Grid>
-        </Grid>
-      </div>
-    </BrowserRouter>
+    <ThemeProvider theme={darkTheme}>
+      <BrowserRouter>
+        <div className="App">
+          <Navbar darkState={darkState} handleThemeChange={handleThemeChange} />
+          <Weather />
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 

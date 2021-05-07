@@ -1,7 +1,10 @@
 import { Typography } from "@material-ui/core";
-import Server from "../../JsonServer.json";
+
+import { useState } from "react";
 
 const WeatherHeader = () => {
+  const [location, setLocation] = useState("kolkata");
+
   return (
     <>
       <Typography variant="h4" style={{ fontWeight: 600, marginBottom: 48 }}>
@@ -13,7 +16,7 @@ const WeatherHeader = () => {
             fontSize: 20,
           }}
         >
-          - {Server.name}
+          {/* - {location} */}
         </Typography>
       </Typography>
     </>

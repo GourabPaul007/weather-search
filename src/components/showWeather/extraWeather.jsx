@@ -6,8 +6,8 @@ import SecondRow from "./extraWeather/secondRow";
 const useStyles = makeStyles({
   hr: {
     height: "1px",
-    color: "#333",
-    backgroundColor: "#333",
+    color: "#BDBDBD",
+    backgroundColor: "#555",
     border: "none",
   },
 });

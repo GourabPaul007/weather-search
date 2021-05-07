@@ -12,10 +12,11 @@ const useStyles = makeStyles((theme) => ({
       margin: 24,
     },
     [theme.breakpoints.up("md")]: {
-      marginTop: 24,
-      marginRight: 24,
-      marginBottom: 24,
+      marginTop: 48,
+      marginLeft: 96,
+      marginBottom: 48,
     },
+    borderRadius: 12,
   },
 }));
 

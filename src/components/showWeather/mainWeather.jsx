@@ -1,6 +1,7 @@
 import { Typography, Grid } from "@material-ui/core";
 import Server from "../../JsonServer.json";
-import { iconPicker, windDirectionConverter } from "../../utils/mainWeatherUtils";
+import { iconPicker } from "../../utils/iconPicker";
+import { windDirectionConverter } from "../../utils/windDirectionConverter";
 
 const MainWeather = () => {
   return (

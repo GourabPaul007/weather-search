@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,10 +7,14 @@ import {
   makeStyles,
   Link,
   CssBaseline,
+  Switch,
+  TextField,
 } from "@material-ui/core";
 // import { MenuIcon } from "@material-ui/icons";     //Doesn't work
 import MenuIcon from "@material-ui/icons/Menu";
 import WbSunnyRoundedIcon from "@material-ui/icons/WbSunnyRounded";
+
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -25,13 +29,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = () => {
-  const classes = useStyles();
+const Navbar = (props) => {
+  const searchCity = async (e) => {
+    e.preventDefault();
+    const mapboxToken =
+      "pk.eyJ1IjoiZ291cmFiLXBhdWwiLCJhIjoiY2tvYmE2MWRsMDRtMDJ1bXFtNmFsdWdpZyJ9.nyRM24alI7SC47EXCwBzrw";
+    const geoCoder = mbxGeocoding({ accessToken: mapboxToken });
+    const geoData = await geoCoder.forwardGeocode({ query: `${location}`, limit: 1 }).send();
+    console.log(geoData.body.features[0].geometry.coordinates);
+  };
 
+  const classes = useStyles();
+  const [location, setLocation] = useState("kolkata");
   return (
     <>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="static" color="primary">
         <Toolbar>
           <WbSunnyRoundedIcon style={{ marginRight: 5 }} />
           <Link
@@ -44,13 +57,18 @@ const Navbar = () => {
             <Typography variant="h6">Weather</Typography>
           </Link>
           {/* For Spacing in middle */}
-          <Typography className={classes.title}></Typography>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
+          <Typography style={{ flexGrow: 5 }}></Typography>
+          <form onSubmit={searchCity}>
+            <TextField
+              variant="standard"
+              placeholder="City Name"
+              value={location}
+              onChange={location}
+            />
+          </form>
+          <Typography style={{ flexGrow: 1 }}></Typography>
+          <Switch checked={props.darkState} onChange={props.handleThemeChange} />
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
         </Toolbar>
