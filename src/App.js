@@ -4,8 +4,10 @@ import { orange, lightBlue, deepOrange, deepPurple, pink, purple } from "@materi
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 
 import Weather from "./weather";
-
 import Navbar from "./components/navbar";
+
+import { weatherProvider, WeatherProvider } from "./contexts/weatherContext";
+import { LocationProvider } from "./contexts/locationContext";
 
 const App = () => {
   const [darkState, setDarkState] = useState(false);
@@ -29,14 +31,19 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <BrowserRouter>
-        <div className="App">
-          <Navbar darkState={darkState} handleThemeChange={handleThemeChange} />
-          <Weather />
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
+    //Didn't wrap this, wasted 1 hour, felt like an idiot
+    <LocationProvider>
+      <weatherProvider>
+        <ThemeProvider theme={darkTheme}>
+          <BrowserRouter>
+            <div className="App">
+              <Navbar darkState={darkState} handleThemeChange={handleThemeChange} />
+              <Weather />
+            </div>
+          </BrowserRouter>
+        </ThemeProvider>
+      </weatherProvider>
+    </LocationProvider>
   );
 };
 
