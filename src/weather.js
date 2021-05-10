@@ -6,6 +6,10 @@ import ShowWeather from "./components/showWeather";
 import Forecast from "./components/forecast";
 
 const Weather = () => {
+  // const fetchWeather = () => {
+  //   let Url = ``;
+  // };
+
   return (
     <BrowserRouter>
       <div className="App">

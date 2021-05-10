@@ -6,7 +6,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Weather from "./weather";
 import Navbar from "./components/navbar";
 
-import { weatherProvider, WeatherProvider } from "./contexts/weatherContext";
+import { WeatherProvider } from "./contexts/weatherContext";
 import { LocationProvider } from "./contexts/locationContext";
 
 const App = () => {
@@ -32,8 +32,8 @@ const App = () => {
 
   return (
     //Didn't wrap this, wasted 1 hour, felt like an idiot
-    <LocationProvider>
-      <weatherProvider>
+    <WeatherProvider>
+      <LocationProvider>
         <ThemeProvider theme={darkTheme}>
           <BrowserRouter>
             <div className="App">
@@ -42,8 +42,8 @@ const App = () => {
             </div>
           </BrowserRouter>
         </ThemeProvider>
-      </weatherProvider>
-    </LocationProvider>
+      </LocationProvider>
+    </WeatherProvider>
   );
 };
 

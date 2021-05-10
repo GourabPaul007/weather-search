@@ -1,9 +1,12 @@
 import { Typography } from "@material-ui/core";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+
+import { LocationContext } from "../../contexts/locationContext";
 
 const WeatherHeader = () => {
-  const [location, setLocation] = useState("kolkata");
+  const { locationValue } = useContext(LocationContext);
+  const [location, setLocation] = locationValue;
 
   return (
     <>
@@ -16,7 +19,7 @@ const WeatherHeader = () => {
             fontSize: 20,
           }}
         >
-          {/* - {location} */}
+          - {location}
         </Typography>
       </Typography>
     </>
