@@ -8,6 +8,15 @@ export const getWeekDay = (UNIX_timestamp) => {
   return weekDays[a.getDay()];
 };
 
+export const timeConverter = (UNIX_timestamp) => {
+  if (!UNIX_timestamp) return null;
+  const a = new Date(UNIX_timestamp * 1000); //this wasted 2 hours in original project
+  const hour = a.getHours();
+  const min = "0" + a.getMinutes();
+  const time = hour + ":" + min.substr(-2);
+  return time;
+};
+
 // export const timeConverter = (UNIX_timestamp) => {
 //   if (!UNIX_timestamp) return null;
 //   const a = new Date(UNIX_timestamp * 1); //this wasted 2 hours

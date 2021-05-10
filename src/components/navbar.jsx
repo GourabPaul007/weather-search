@@ -66,18 +66,18 @@ const Navbar = (props) => {
   const [description, setDescription] = descriptionValue;
   const [feelsLike, setFeelsLike] = feelsLikeValue;
 
-  //getting ip address and address data of user
-  const getIpAddressAndGeoData = async () => {
+  //getting ip and address data of user on start of the application
+  useEffect(async () => {
     const data = await axios.get("http://ip-api.com/json");
     setLocation(`${data.data.city},${data.data.regionName}`);
     setLat(data.data.lat);
     setLon(data.data.lon);
-  };
-  //will get the ip of the user on start of the application
-  useEffect(async () => {
-    getIpAddressAndGeoData();
-    // searchWeather();
-  }, []);
+    //-------------------
+    let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
+    const weatherJson = await axios.get(Url);
+    console.log(weatherJson.data);
+    setStateData(weatherJson);
+  }, [lat, lon]);
 
   // Geocoding the latitude & longitude from cityname with mapbox api
   const searchCity = async () => {
@@ -94,7 +94,10 @@ const Navbar = (props) => {
     await searchCity();
     let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
     const weatherJson = await axios.get(Url);
-    console.log(weatherJson.data);
+    setStateData(weatherJson);
+  };
+  //for setting the state data aquired from useEffect or searchweather
+  const setStateData = (weatherJson) => {
     setTemp(weatherJson.data.current.temp);
     setWindSpeed(weatherJson.data.current.wind_speed);
     setWindDeg(weatherJson.data.current.wind_deg);
@@ -105,8 +108,6 @@ const Navbar = (props) => {
     setDescription(weatherJson.data.current.weather[0].description);
     setFeelsLike(weatherJson.data.current.feels_like);
   };
-
-  const setStateData = () => {};
 
   return (
     <>
