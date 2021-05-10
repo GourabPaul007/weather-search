@@ -1,15 +1,38 @@
+import React, { useContext } from "react";
 import { Typography, Grid } from "@material-ui/core";
+import { WeatherContext } from "../../contexts/weatherContext";
 import Server from "../../JsonServer.json";
 import { iconPicker } from "../../utils/iconPicker";
 import { windDirectionConverter } from "../../utils/windDirectionConverter";
 
 const MainWeather = () => {
+  const {
+    tempValue,
+    windSpeedValue,
+    windDegValue,
+    humidityValue,
+    cloudinessValue,
+    sunriseValue,
+    sunsetValue,
+    descriptionValue,
+    feelsLikeValue,
+  } = useContext(WeatherContext);
+  const [temp, setTemp] = tempValue;
+  const [windSpeed, setWindSpeed] = windSpeedValue;
+  const [windDeg, setWindDeg] = windDegValue;
+  const [humidity, setHumidity] = humidityValue;
+  const [cloudiness, setCloudiness] = cloudinessValue;
+  const [sunrise, setSunrise] = sunriseValue;
+  const [sunset, setSunset] = sunsetValue;
+  const [description, setDescription] = descriptionValue;
+  const [feelsLike, setFeelsLike] = feelsLikeValue;
+
   return (
     <>
       <Grid container spacing={3}>
         <Grid item xs={6} container direction="row" justify="flex-start" alignItems="center">
           <Typography variant="h3" style={{ fontWeight: 600 }}>
-            {Math.round(Server.current.temp - 270)}° {iconPicker(Server.current.weather[0].main)}{" "}
+            {Math.round(parseInt(temp) - 270)}° {iconPicker(Server.current.weather[0].main)}{" "}
             {/*                         wasted 1 hr                          ^*/}
           </Typography>
         </Grid>
@@ -30,7 +53,7 @@ const MainWeather = () => {
             <Typography>Wind</Typography>
             <Typography>
               {" "}
-              {windDirectionConverter(Server.current.wind_deg)} {Server.current.wind_speed} m/s
+              {windDirectionConverter(windDeg)} {windSpeed} m/s
             </Typography>
           </Grid>
         </Grid>
@@ -38,8 +61,7 @@ const MainWeather = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} container direction="row" justify="flex-start" alignItems="center">
           <Typography>
-            {Server.current.weather[0].description}. Temperature feels like{" "}
-            {Math.round(Server.current.feels_like - 270)}°. Winds{" "}
+            {description}. Temperature feels like {Math.round(parseInt(feelsLike) - 270)}°. Winds{" "}
             {windDirectionConverter(Server.current.wind_deg)} at {Server.current.wind_speed} m/s
           </Typography>
         </Grid>

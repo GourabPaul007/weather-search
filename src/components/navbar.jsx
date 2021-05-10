@@ -20,6 +20,7 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import axios from "axios";
 
 import { LocationContext } from "../contexts/locationContext";
+import { WeatherContext } from "../contexts/weatherContext";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -37,10 +38,33 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = (props) => {
   const classes = useStyles();
 
+  //getting location context
   const { locationValue, latValue, lonValue } = useContext(LocationContext);
   const [location, setLocation] = locationValue;
   const [lat, setLat] = latValue;
   const [lon, setLon] = lonValue;
+
+  //getting weather context
+  const {
+    tempValue,
+    windSpeedValue,
+    windDegValue,
+    humidityValue,
+    cloudinessValue,
+    sunriseValue,
+    sunsetValue,
+    descriptionValue,
+    feelsLikeValue,
+  } = useContext(WeatherContext);
+  const [temp, setTemp] = tempValue;
+  const [windSpeed, setWindSpeed] = windSpeedValue;
+  const [windDeg, setWindDeg] = windDegValue;
+  const [humidity, setHumidity] = humidityValue;
+  const [cloudiness, setCloudiness] = cloudinessValue;
+  const [sunrise, setSunrise] = sunriseValue;
+  const [sunset, setSunset] = sunsetValue;
+  const [description, setDescription] = descriptionValue;
+  const [feelsLike, setFeelsLike] = feelsLikeValue;
 
   //getting ip address and address data of user
   const getIpAddressAndGeoData = async () => {
@@ -49,9 +73,10 @@ const Navbar = (props) => {
     setLat(data.data.lat);
     setLon(data.data.lon);
   };
-
-  useEffect(() => {
+  //will get the ip of the user on start of the application
+  useEffect(async () => {
     getIpAddressAndGeoData();
+    // searchWeather();
   }, []);
 
   // Geocoding the latitude & longitude from cityname with mapbox api
@@ -60,18 +85,28 @@ const Navbar = (props) => {
       "pk.eyJ1IjoiZ291cmFiLXBhdWwiLCJhIjoiY2tvYmE2MWRsMDRtMDJ1bXFtNmFsdWdpZyJ9.nyRM24alI7SC47EXCwBzrw";
     const geoCoder = mbxGeocoding({ accessToken: mapboxToken });
     const geoData = await geoCoder.forwardGeocode({ query: `${location}`, limit: 1 }).send();
-    console.log(geoData.body.features[0].geometry.coordinates);
     setLat(geoData.body.features[0].geometry.coordinates[1]);
     setLon(geoData.body.features[0].geometry.coordinates[0]);
   };
 
   const searchWeather = async (e) => {
     e.preventDefault();
-    searchCity();
+    await searchCity();
     let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
     const weatherJson = await axios.get(Url);
-    console.log(weatherJson);
+    console.log(weatherJson.data);
+    setTemp(weatherJson.data.current.temp);
+    setWindSpeed(weatherJson.data.current.wind_speed);
+    setWindDeg(weatherJson.data.current.wind_deg);
+    setHumidity(weatherJson.data.current.humidity);
+    setCloudiness(weatherJson.data.current.clouds);
+    setSunrise(weatherJson.data.current.sunrise);
+    setSunset(weatherJson.data.current.sunset);
+    setDescription(weatherJson.data.current.weather[0].description);
+    setFeelsLike(weatherJson.data.current.feels_like);
   };
+
+  const setStateData = () => {};
 
   return (
     <>

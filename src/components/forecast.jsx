@@ -42,7 +42,7 @@ const Forecast = () => {
   ]);
 
   const fetchForecasts = () => {
-    console.log("data", forecastData);
+    // console.log("data", forecastData);
     for (let i = 1; i < 7; i++) {
       setForecastData((forecastData) => [
         //I NEED TO PASS STATE AS ARGUMENT FFS, WASTED 5 HOURS
