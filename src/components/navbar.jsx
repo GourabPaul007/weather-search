@@ -22,6 +22,8 @@ import axios from "axios";
 import { LocationContext } from "../contexts/locationContext";
 import { WeatherContext } from "../contexts/weatherContext";
 
+import {OPENWEATHERAPIKEY, MAPBOXTOKEN} from '../keys&stuff'
+
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -73,7 +75,7 @@ const Navbar = (props) => {
     setLat(data.data.lat);
     setLon(data.data.lon);
     //-------------------
-    let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
+    let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${OPENWEATHERAPIKEY}`;
     const weatherJson = await axios.get(Url);
     console.log(weatherJson.data);
     setStateData(weatherJson);
@@ -82,7 +84,7 @@ const Navbar = (props) => {
   // Geocoding the latitude & longitude from cityname with mapbox api
   const searchCity = async () => {
     const mapboxToken =
-      "pk.eyJ1IjoiZ291cmFiLXBhdWwiLCJhIjoiY2tvYmE2MWRsMDRtMDJ1bXFtNmFsdWdpZyJ9.nyRM24alI7SC47EXCwBzrw";
+      `${MAPBOXTOKEN}`;
     const geoCoder = mbxGeocoding({ accessToken: mapboxToken });
     const geoData = await geoCoder.forwardGeocode({ query: `${location}`, limit: 1 }).send();
     setLat(geoData.body.features[0].geometry.coordinates[1]);
