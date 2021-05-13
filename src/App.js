@@ -8,6 +8,7 @@ import Navbar from "./components/navbar";
 
 import { WeatherProvider } from "./contexts/weatherContext";
 import { LocationProvider } from "./contexts/locationContext";
+import { ForecastProvider } from "./contexts/forecastContext";
 
 const App = () => {
   const [darkState, setDarkState] = useState(false);
@@ -32,18 +33,20 @@ const App = () => {
 
   return (
     //Didn't wrap this, wasted 1 hour, felt like an idiot
-    <WeatherProvider>
-      <LocationProvider>
-        <ThemeProvider theme={darkTheme}>
-          <BrowserRouter>
-            <div className="App">
-              <Navbar darkState={darkState} handleThemeChange={handleThemeChange} />
-              <Weather />
-            </div>
-          </BrowserRouter>
-        </ThemeProvider>
-      </LocationProvider>
-    </WeatherProvider>
+    <LocationProvider>
+      <ForecastProvider>
+        <WeatherProvider>
+          <ThemeProvider theme={darkTheme}>
+            <BrowserRouter>
+              <div className="App">
+                <Navbar darkState={darkState} handleThemeChange={handleThemeChange} />
+                <Weather />
+              </div>
+            </BrowserRouter>
+          </ThemeProvider>
+        </WeatherProvider>
+      </ForecastProvider>
+    </LocationProvider>
   );
 };
 

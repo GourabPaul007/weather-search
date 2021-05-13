@@ -1,12 +1,19 @@
 import { Typography } from "@material-ui/core";
 
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import { LocationContext } from "../../contexts/locationContext";
+import { WeatherContext } from "../../contexts/weatherContext";
+
+import { getDate } from "../../utils/DateTime";
 
 const WeatherHeader = () => {
   const { locationValue } = useContext(LocationContext);
   const [location, setLocation] = locationValue;
+
+  const [weather, setWeather] = useContext(WeatherContext);
+
+  // const date = weather.date;
 
   return (
     <>
@@ -22,6 +29,7 @@ const WeatherHeader = () => {
           - {location}
         </Typography>
       </Typography>
+      <Typography>{getDate(weather.date)}</Typography>
     </>
   );
 };

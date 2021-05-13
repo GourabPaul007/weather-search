@@ -8,6 +8,16 @@ export const getWeekDay = (UNIX_timestamp) => {
   return weekDays[a.getDay()];
 };
 
+export const getDate = (UNIX_timestamp) => {
+  if (!UNIX_timestamp) return null;
+  const a = new Date(UNIX_timestamp * 1); //this wasted 2 hours
+  const year = a.getFullYear();
+  const month = `0${a.getMonth() + 1}`;
+  const date = a.getDate();
+  const time = date + " " + month.substr(-2) + " " + year;
+  return time;
+};
+
 export const timeConverter = (UNIX_timestamp) => {
   if (!UNIX_timestamp) return null;
   const a = new Date(UNIX_timestamp * 1000); //this wasted 2 hours in original project

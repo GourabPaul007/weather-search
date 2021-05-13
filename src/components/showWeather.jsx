@@ -3,6 +3,9 @@ import ExtraWeather from "./showWeather/extraWeather";
 import MainWeather from "./showWeather/mainWeather";
 import WeatherHeader from "./showWeather/weatherHeader";
 
+import { WeatherContext } from "../contexts/weatherContext";
+import { useContext } from "react";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 800,
@@ -22,16 +25,21 @@ const useStyles = makeStyles((theme) => ({
 
 const ShowWeather = () => {
   const classes = useStyles();
+
+  const [weather, setWeather] = useContext(WeatherContext);
+
   return (
     <Container>
-      <Card variant="outlined" className={classes.mainCard}>
-        <CardContent style={{ margin: 12 }}>
-          {/* Main Weather Component */}
-          <WeatherHeader />
-          <MainWeather />
-          <ExtraWeather />
-        </CardContent>
-      </Card>
+      {weather.temp ? (
+        <Card variant="outlined" className={classes.mainCard}>
+          <CardContent style={{ margin: 12 }}>
+            {/* Main Weather Component */}
+            <WeatherHeader />
+            <MainWeather />
+            <ExtraWeather />
+          </CardContent>
+        </Card>
+      ) : null}
     </Container>
   );
 };
