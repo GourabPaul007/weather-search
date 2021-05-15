@@ -9,9 +9,6 @@ import {
   CssBaseline,
   Switch,
   TextField,
-  MenuItem,
-  Select,
-  Button,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import WbSunnyRoundedIcon from "@material-ui/icons/WbSunnyRounded";

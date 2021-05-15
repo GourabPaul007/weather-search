@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { lightBlue, pink, purple, deepPurple } from "@material-ui/core/colors";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
@@ -17,23 +17,20 @@ const App = () => {
   const palletType = darkState ? "dark" : "light";
   const mainPrimaryColor = darkState ? pink[700] : lightBlue[500];
   const mainSecondaryColor = darkState ? purple[500] : deepPurple[500];
-  const darkTheme = useMemo(() =>
-    createMuiTheme({
-      palette: {
-        type: palletType,
-        primary: {
-          main: mainPrimaryColor,
-        },
-        secondary: {
-          main: mainSecondaryColor,
-        },
+  const darkTheme = createMuiTheme({
+    palette: {
+      type: palletType,
+      primary: {
+        main: mainPrimaryColor,
       },
-      typography: {
-        fontFamily: ["Roboto", "Arial", "sans-serif", "-apple-system"],
+      secondary: {
+        main: mainSecondaryColor,
       },
-    })
-  );
-
+    },
+    typography: {
+      fontFamily: ["Roboto", "Arial", "sans-serif", "-apple-system"],
+    },
+  });
   //this was tricky, got me 2 hours and brain tumor
   const handleThemeChange = () => {
     setDarkState((darkState) => !darkState);
