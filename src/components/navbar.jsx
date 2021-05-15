@@ -13,7 +13,6 @@ import {
   Select,
   Button,
 } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search"; //Doesn't work
 import MenuIcon from "@material-ui/icons/Menu";
 import WbSunnyRoundedIcon from "@material-ui/icons/WbSunnyRounded";
 
@@ -41,10 +40,8 @@ const Navbar = (props) => {
   const classes = useStyles();
 
   //getting location context
-  const { locationValue, latValue, lonValue } = useContext(LocationContext);
+  const { locationValue } = useContext(LocationContext);
   const [location, setLocation] = locationValue;
-  const [latitude, setLatitude] = latValue;
-  const [longitude, setLongitude] = lonValue;
 
   //getting weather context
   const [weather, setWeather] = useContext(WeatherContext);
@@ -56,7 +53,6 @@ const Navbar = (props) => {
   useEffect(async () => {
     const data = await axios.get("http://ip-api.com/json");
     setLocation(`${data.data.city},${data.data.regionName}`);
-    //-------------------
     let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${data.data.lat}&lon=${data.data.lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
     const weatherJson = await axios.get(Url);
     setStateData(weatherJson);
@@ -73,25 +69,27 @@ const Navbar = (props) => {
       geoData.body.features[0].geometry.coordinates[1],
       geoData.body.features[0].geometry.coordinates[0],
     ];
-    // setLatitude(geoData.body.features[0].geometry.coordinates[1]);
-    // setLongitude(geoData.body.features[0].geometry.coordinates[0]);
   };
 
-  const searchWeather = async (e) => {
-    e.preventDefault();
-    //to prevent forecast data from over stacking when user searches with text
-    await setWeather({});
-    await setForecastData([
-      {
-        forecastDayTemp: null,
-      },
-    ]);
-    const [lat, lon] = await searchCity();
-    let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
-    const weatherJson = await axios.get(Url);
-    setStateData(weatherJson);
-  };
-  //for setting the state data aquired from useEffect or searchweather
+  const searchWeather = React.useMemo(
+    () => async (e) => {
+      e.preventDefault();
+      //to prevent forecast data from over stacking when user searches with text
+      // await setWeather({});
+      await setForecastData([
+        {
+          forecastDayTemp: null,
+        },
+      ]);
+      const [lat, lon] = await searchCity();
+      let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
+      const weatherJson = await axios.get(Url);
+      setStateData(weatherJson);
+    },
+    [location]
+  );
+
+  // for setting the state data aquired from useEffect or searchweather
   const setStateData = (weatherJson) => {
     // setting State pf Main Weather Data
     setWeather({
@@ -106,12 +104,14 @@ const Navbar = (props) => {
       description: weatherJson.data.current.weather[0].description,
       feelsLike: weatherJson.data.current.feels_like,
     });
+    //setting state of forecast data
     for (let i = 1; i < 7; i++) {
       setForecastData((forecastData) => [
         //I NEED TO PASS STATE AS ARGUMENT FFS, WASTED 5 HOURS
         ...forecastData,
         {
           i: i,
+          forecastMain: weatherJson.data.daily[i].weather[0].main.toString(),
           forecastDateTime: weatherJson.data.daily[i].dt.toString(), //for weekday
           forecastDayTemp: weatherJson.data.daily[i].temp.day.toFixed(2).toString(),
           forecastNightTemp: weatherJson.data.daily[i].temp.night.toFixed(2).toString(),

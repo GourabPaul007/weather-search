@@ -6,6 +6,7 @@ export const ForecastProvider = (props) => {
   const [forecastData, setForecastData] = useState([
     {
       i: "",
+      forecastDaily: "",
       forecastDateTime: "",
       forecastDayTemp: "",
       forecastNightTemp: "",
