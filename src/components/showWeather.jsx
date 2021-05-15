@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: 48,
       marginLeft: 96,
       marginBottom: 48,
+      marginRight: 48,
     },
     borderRadius: 12,
   },

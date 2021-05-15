@@ -7,7 +7,6 @@ import {
   makeStyles,
   Grid,
 } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useContext } from "react";
 import { getWeekDay } from "../utils/DateTime";
 import TempDay from "./forecast/tempDay";
@@ -16,6 +15,7 @@ import Humidity from "./forecast/humidity";
 import Cloudiness from "./forecast/cloudiness";
 
 import { ForecastContext } from "../contexts/forecastContext";
+import { iconPicker } from "../utils/iconPicker";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -24,14 +24,18 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up("md")]: {
       marginTop: 48,
-      marginRight: 120,
+      marginRight: 160,
       marginBottom: 48,
     },
     borderRadius: 12,
   },
-  accordions: {
-    // margin: 8,
+  expandIcon: {
+    "&$expanded": {
+      transition: ".5s",
+      transform: "rotate(360deg)",
+    },
   },
+  expanded: {},
 }));
 
 const Forecast = () => {
@@ -51,11 +55,22 @@ const Forecast = () => {
               defaultExpanded={singleDay.i == 1 ? true : false}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                classes={{
+                  expandIcon: classes.expandIcon,
+                  expanded: classes.expanded,
+                }}
+                // expandIcon={<ExpandMoreIcon />}
+                expandIcon={iconPicker(singleDay.forecastMain)}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>{getWeekDay(singleDay.forecastDateTime)}</Typography>
+                <Typography>
+                  {singleDay.i == 1 ? (
+                    <Typography>Tomorrow</Typography>
+                  ) : (
+                    getWeekDay(singleDay.forecastDateTime)
+                  )}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Grid container spacing={3}>
