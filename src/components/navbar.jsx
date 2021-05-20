@@ -71,6 +71,7 @@ const Navbar = (props) => {
   const searchWeather = React.useMemo(
     () => async (e) => {
       e.preventDefault();
+      console.log("fetching data");
       //to prevent forecast data from over stacking when user searches with text
       // await setWeather({});
       await setForecastData([
@@ -132,7 +133,9 @@ const Navbar = (props) => {
             target="_self"
             onClick={(e) => e.preventDefault}
           >
-            <Typography variant="h6">Weather</Typography>
+            <Typography style={{ marginRight: 20 }} variant="h6">
+              Weather
+            </Typography>
           </Link>
           {/* For Spacing in middle */}
           <Typography style={{ flexGrow: 5 }}></Typography>
@@ -140,6 +143,7 @@ const Navbar = (props) => {
             <TextField
               variant="standard"
               placeholder="City Name"
+              value={location}
               onChange={(e) => setLocation(e.target.value)} //HUH...
             ></TextField>
           </form>
