@@ -47,10 +47,11 @@ const Navbar = (props) => {
   const [forecastData, setForecastData] = useContext(ForecastContext);
 
   //getting ip and address data of user on start of the application
+  // old api -> http://ip-api.com/json
   useEffect(async () => {
-    const data = await axios.get("http://ip-api.com/json");
-    setLocation(`${data.data.city},${data.data.regionName}`);
-    let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${data.data.lat}&lon=${data.data.lon}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
+    const data = await axios.get("https://ipapi.co/json");
+    setLocation(`${data.data.city},${data.data.region}`);
+    let Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${data.data.latitude}&lon=${data.data.longitude}&exclude=minutely&appid=92d4fe58fd19b2bfd859485342be9dde`;
     const weatherJson = await axios.get(Url);
     setStateData(weatherJson);
   }, []);
